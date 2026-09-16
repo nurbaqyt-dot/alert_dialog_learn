@@ -23,8 +23,8 @@ class _FormPageState extends State<FormPage> {
   final _phoneFocus = FocusNode();
   final _passFocus = FocusNode();
 
-
   final _mainKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> _countries = [
     "Kazakhstan",
@@ -50,7 +50,11 @@ class _FormPageState extends State<FormPage> {
     super.dispose();
   }
 
-  void _changeFocus(BuildContext context, FocusNode currentFocus,FocusNode nextFocus){
+  void _changeFocus(
+    BuildContext context,
+    FocusNode currentFocus,
+    FocusNode nextFocus,
+  ) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
@@ -58,6 +62,7 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const Text(
@@ -96,7 +101,7 @@ class _FormPageState extends State<FormPage> {
               validator: _validateName,
               focusNode: _nameFocus,
               autofocus: true,
-              onFieldSubmitted: (_){
+              onFieldSubmitted: (_) {
                 _changeFocus(context, _nameFocus, _phoneFocus);
               },
             ),
@@ -128,7 +133,7 @@ class _FormPageState extends State<FormPage> {
               ],
               validator: _validateNumber,
               focusNode: _phoneFocus,
-              onFieldSubmitted: (_){
+              onFieldSubmitted: (_) {
                 _changeFocus(context, _phoneFocus, _passFocus);
               },
             ),
@@ -206,9 +211,7 @@ class _FormPageState extends State<FormPage> {
                     });
                   },
                   icon: Icon(
-                    _hideText
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                    _hideText ? Icons.visibility_off : Icons.visibility,
                   ),
                 ),
                 border: const OutlineInputBorder(),
@@ -262,6 +265,8 @@ class _FormPageState extends State<FormPage> {
       print("Life Story: ${_life.text}");
       print("Password: ${_password.text}");
       print("Confirm Password: ${_confirm.text}");
+    } else {
+      _showMessage(message: "Form is not valid!");
     }
   }
 
@@ -321,5 +326,19 @@ class _FormPageState extends State<FormPage> {
     }
 
     return null;
+  }
+
+  void _showMessage({required String message}) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 }
