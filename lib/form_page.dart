@@ -257,6 +257,7 @@ class _FormPageState extends State<FormPage> {
 
   void controll() {
     if (_mainKey.currentState!.validate()) {
+      _showDialog(name: _name.text);
       print("Form is valid");
       print("Name: ${_name.text}");
       print("Phone: ${_phone.text}");
@@ -339,6 +340,19 @@ class _FormPageState extends State<FormPage> {
         ),
         backgroundColor: Colors.red,
       ),
+    );
+  }
+
+  void _showDialog({String? name}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.green,
+          title: Text("Registration is succesful", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+          content: Text("$name you just registered", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        );
+      },
     );
   }
 }
